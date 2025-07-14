@@ -25,6 +25,7 @@ export default function ContactSection() {
       setEmail('');
       setMessage('');
     } catch (error) {
+      console.error('Error submitting form:', error);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -167,7 +168,7 @@ export default function ContactSection() {
                 
                 {submitStatus === 'success' && (
                   <div className="mt-4 p-3 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-md">
-                    Your message has been sent successfully! I'll get back to you soon.
+                    Your message has been sent successfully! I&apos;ll get back to you soon.
                   </div>
                 )}
                 

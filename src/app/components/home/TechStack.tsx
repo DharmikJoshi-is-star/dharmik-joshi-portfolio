@@ -79,7 +79,7 @@ export default function TechStack() {
           transition={{ duration: 0.5 }}
           className="mb-16"
         >
-          <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">Companies I've Worked With</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">Companies I&apos;ve Worked With</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 md:gap-8">
             {companies.map((company, index) => (
               <motion.div

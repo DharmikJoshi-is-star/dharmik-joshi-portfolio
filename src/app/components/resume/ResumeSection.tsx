@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import ResumeViewer from './ResumeViewer';
 
 // Example skills data - these should match the skills in your resume
 const skills = [
@@ -39,7 +38,6 @@ export default function ResumeSection() {
   };
 
   // Use a placeholder PDF URL for now - you'll need to replace this with your actual resume
-  const resumeUrl = "/sample-resume.pdf";
 
   return (
     <section id="resume" className="py-16 px-6 bg-white dark:bg-gray-900">
@@ -183,7 +181,7 @@ export default function ResumeSection() {
           >
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
               <p className="text-center mb-6 text-gray-500 dark:text-gray-400">
-                For now, we're displaying a placeholder for the resume. You'll need to add your actual resume PDF to the public folder.
+                For now, we&apos;re displaying a placeholder for the resume. You&apos;ll need to add your actual resume PDF to the public folder.
               </p>
               <div className="flex justify-center mb-4">
                 <a

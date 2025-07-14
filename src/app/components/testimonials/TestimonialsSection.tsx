@@ -51,7 +51,7 @@ export default function TestimonialsSection() {
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Testimonials</h2>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Here's what people are saying about working with me.
+            Here&apos;s what people are saying about working with me.
           </p>
         </motion.div>
 

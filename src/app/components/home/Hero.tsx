@@ -16,7 +16,7 @@ export default function Hero() {
           className="flex-1 text-center md:text-left"
         >
           <h1 className="text-3xl md:text-5xl font-bold mb-4 text-white">
-            <span className="inline-block">Hi, I'm</span>
+            <span className="inline-block">Hi, I&apos;m</span>
             <span className="text-blue-500 inline-block ml-2">Dharmik Joshi</span>
           </h1>
           <h2 className="text-xl md:text-2xl font-semibold text-gray-300 mb-6">
