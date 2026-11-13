@@ -1,116 +1,94 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from "react";
+import Link from "next/link";
 
-interface NavItem {
-  name: string;
-  href: string;
-}
-
-const navItems: NavItem[] = [
-  { name: 'Home', href: '/' },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Resume', href: '#resume' },
-  { name: 'Testimonials', href: '#testimonials' },
-  { name: 'YouTube', href: '#youtube' },
-  { name: 'Contact', href: '#contact' },
+const sections = [
+  { id: "top", label: "Home", href: "#top" },
+  { id: "work", label: "Work", href: "#work" },
+  { id: "posts", label: "Posts", href: "#posts" },
+  { id: "skills", label: "Skills", href: "#skills" },
+  { id: "projects", label: "Code", href: "#projects" },
+  { id: "contact", label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState("top");
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
+    const ids = sections.map((s) => s.id);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]?.target.id) {
+          setActive(visible[0].target.id);
+        }
+      },
+      { rootMargin: "-30% 0px -55% 0px", threshold: [0, 0.25, 0.5] }
+    );
 
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-black/90 backdrop-blur-md shadow-md' : 'bg-transparent'}`}>
-      <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
-        <Link href="/" className="text-xl font-bold flex items-center gap-2">
-          <div className="relative w-8 h-8 rounded-full overflow-hidden border-2 border-blue-500 shadow-sm">
-            <img 
-              src="/assets/profile/dharmik-profile.jpg" 
-              alt="Dharmik Joshi" 
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <span><span className="text-blue-500">D</span>harmik <span className="text-blue-500">J</span>oshi</span>
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-line bg-surface/85 backdrop-blur-md">
+      <nav className="mx-auto flex max-w-5xl items-center justify-between px-5 py-4">
+        <Link
+          href="#top"
+          className="font-mono text-sm tracking-tight text-ink hover:text-accent transition-colors"
+        >
+          dj<span className="text-accent">/</span>backend
         </Link>
 
-        {/* Desktop Navigation */}
-        <ul className="hidden md:flex space-x-8">
-          {navItems.map((item) => (
-            <li key={item.name}>
-              <Link 
-                href={item.href} 
-                className="text-white hover:text-blue-400 transition-colors"
+        <ul className="hidden md:flex gap-8 text-sm">
+          {sections.map((item) => (
+            <li key={item.id}>
+              <Link
+                href={item.href}
+                className={`text-ink-muted hover:text-ink transition-colors ${
+                  active === item.id ? "nav-link-active text-ink" : ""
+                }`}
               >
-                {item.name}
+                {item.label}
               </Link>
             </li>
           ))}
         </ul>
 
-        {/* Mobile Navigation Button */}
-        <button 
-          onClick={() => setIsOpen(!isOpen)} 
-          className="md:hidden focus:outline-none"
+        <button
+          type="button"
+          className="md:hidden font-mono text-xs text-ink-muted"
+          onClick={() => setOpen(!open)}
+          aria-expanded={open}
           aria-label="Toggle menu"
         >
-          <div className="w-6 h-5 flex flex-col justify-between">
-            <span 
-              className={`w-full h-0.5 bg-gray-800 dark:bg-gray-200 transition-all duration-300 ${isOpen ? 'transform rotate-45 translate-y-2' : ''}`}
-            />
-            <span 
-              className={`w-full h-0.5 bg-gray-800 dark:bg-gray-200 transition-opacity duration-300 ${isOpen ? 'opacity-0' : 'opacity-100'}`}
-            />
-            <span 
-              className={`w-full h-0.5 bg-gray-800 dark:bg-gray-200 transition-all duration-300 ${isOpen ? 'transform -rotate-45 -translate-y-2' : ''}`}
-            />
-          </div>
+          {open ? "close" : "menu"}
         </button>
-
-        {/* Mobile Navigation Menu */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div 
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.2 }}
-              className="absolute top-full left-0 w-full bg-white dark:bg-gray-900 shadow-lg md:hidden py-4"
-            >
-              <ul className="flex flex-col space-y-4 px-6">
-                {navItems.map((item) => (
-                  <li key={item.name}>
-                    <Link 
-                      href={item.href} 
-                      className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors block"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </nav>
+
+      {open && (
+        <ul className="md:hidden border-t border-line px-5 py-4 space-y-3 bg-surface-elevated">
+          {sections.map((item) => (
+            <li key={item.id}>
+              <Link
+                href={item.href}
+                className="block font-mono text-sm text-ink-muted"
+                onClick={() => setOpen(false)}
+              >
+                → {item.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </header>
   );
 }

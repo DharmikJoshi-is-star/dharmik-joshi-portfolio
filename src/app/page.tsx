@@ -1,21 +1,24 @@
-import React from "react";
 import Hero from "./components/home/Hero";
-import TechStack from "./components/home/TechStack";
+import SummaryStrip from "./components/home/SummaryStrip";
+import ExperienceSection from "./components/experience/ExperienceSection";
+import SkillsSection from "./components/skills/SkillsSection";
 import ProjectsSection from "./components/projects/ProjectsSection";
-import ResumeSection from "./components/resume/ResumeSection";
-import TestimonialsSection from "./components/testimonials/TestimonialsSection";
+import ProjectDemosSection from "./components/projects/ProjectDemosSection";
+import LinkedInSection from "./components/linkedin/LinkedInSection";
+import AsideSection from "./components/home/AsideSection";
 import ContactSection from "./components/contact/ContactSection";
-import YouTubeSection from "./components/youtube/YouTubeSection";
 
 export default function Home() {
   return (
     <>
       <Hero />
-      <TechStack />
+      <SummaryStrip />
+      <ExperienceSection />
+      <LinkedInSection />
+      <SkillsSection />
       <ProjectsSection />
-      <ResumeSection />
-      <TestimonialsSection />
-      <YouTubeSection />
+      <ProjectDemosSection />
+      <AsideSection />
       <ContactSection />
     </>
   );
