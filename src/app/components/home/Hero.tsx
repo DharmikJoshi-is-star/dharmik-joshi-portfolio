@@ -1,84 +1,139 @@
 "use client";
 
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import Image from 'next/image';
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { site } from "../../data/portfolio";
+
+const terminalLines = [
+  "$ kubectl get pods -l app=account-sse-gateway",
+  "NAME                          READY   STATUS",
+  "account-sse-gateway-7f8c-abc   1/1     Running",
+  "account-sse-gateway-7f8c-def   1/1     Running",
+  "$ curl -N -H \"Authorization: Bearer …\" /stream/accounts",
+  "event: account.updated",
+  'data: {"accountId":"…","fields":["dns","ssl"]}',
+  "// still connected — keepalive ping every 25s",
+];
 
 export default function Hero() {
+  const [lineIndex, setLineIndex] = useState(0);
+  const [displayed, setDisplayed] = useState("");
+
+  useEffect(() => {
+    const full = terminalLines[lineIndex] ?? "";
+    let i = 0;
+    setDisplayed("");
+
+    const typeTimer = setInterval(() => {
+      i += 1;
+      setDisplayed(full.slice(0, i));
+      if (i >= full.length) {
+        clearInterval(typeTimer);
+        const pause = setTimeout(() => {
+          setLineIndex((prev) => (prev + 1) % terminalLines.length);
+        }, 1400);
+        return () => clearTimeout(pause);
+      }
+    }, 22);
+
+    return () => clearInterval(typeTimer);
+  }, [lineIndex]);
+
   return (
-    <section className="min-h-screen flex flex-col md:flex-row items-center justify-center px-6 py-12 md:py-24 bg-gradient-to-br from-gray-900 to-gray-950">
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
-        {/* Text Content */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="flex-1 text-center md:text-left"
-        >
-          <h1 className="text-3xl md:text-5xl font-bold mb-4 text-white">
-            <span className="inline-block">Hi, I&apos;m</span>
-            <span className="text-blue-500 inline-block ml-2">Dharmik Joshi</span>
+    <section
+      id="top"
+      className="relative mx-auto max-w-5xl px-5 pb-20 pt-8 md:pt-16"
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 items-start"
+      >
+        <div>
+          <p className="section-label mb-4">Mumbai · Senior SDE</p>
+          <h1 className="font-serif text-4xl leading-tight text-ink sm:text-5xl md:text-6xl">
+            I build backends that{" "}
+            <span className="italic text-accent">feel instant</span> in the
+            browser.
           </h1>
-          <h2 className="text-xl md:text-2xl font-semibold text-gray-300 mb-6">
-            Senior Java Backend Developer
-          </h2>
-          <p className="text-gray-300 mb-8 max-w-lg">
-            Building robust and scalable backend systems with Java, Spring Boot, and Microservices. 
-            Passionate about creating efficient solutions for complex problems.
+          <p className="mt-6 max-w-xl text-lg text-ink-muted">{site.tagline}</p>
+
+          <p className="mt-4 max-w-xl text-ink-faint text-sm leading-relaxed">
+            Right now at Newfold Digital — SSE gateways, MCP servers, and
+            RabbitMQ pipelines. Before that, lending and payments at ShopSe for
+            millions of checkout sessions.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-            <Link 
-              href="#resume"
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-full transition-colors duration-300 text-center"
+          <div className="mt-10 flex flex-wrap items-center gap-4">
+            <Link
+              href="#work"
+              className="rounded-sm border border-accent bg-accent px-5 py-2.5 text-sm font-medium text-surface transition hover:bg-transparent hover:text-accent"
             >
-              View Resume
+              See the work
             </Link>
-            <Link 
-              href="#contact"
-              className="px-6 py-3 border border-blue-500 text-blue-500 hover:bg-blue-900/20 font-medium rounded-full transition-colors duration-300 text-center"
+            <Link
+              href={site.resumePdf}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-sm text-ink-muted underline-offset-4 hover:text-accent hover:underline"
             >
-              Contact Me
+              resume.pdf
             </Link>
+            <a
+              href={site.links.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-sm text-ink-muted hover:text-ink"
+            >
+              github ↗
+            </a>
           </div>
 
-          {/* Tech Stack Icons */}
-          <div className="mt-12">
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Tech Stack</p>
-            <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-              {['Java', 'Spring Boot', 'Redis', 'Docker', 'AWS', 'MongoDB'].map((tech) => (
-                <div 
-                  key={tech}
-                  className="px-4 py-2 bg-white dark:bg-gray-800 rounded-full shadow-sm text-sm"
-                >
-                  {tech}
-                </div>
-              ))}
+          <dl className="mt-12 grid grid-cols-2 gap-6 border-t border-line pt-8 sm:grid-cols-3">
+            <div>
+              <dt className="font-mono text-[10px] uppercase tracking-widest text-ink-faint">
+                Focus
+              </dt>
+              <dd className="mt-1 text-sm">Event-driven APIs</dd>
             </div>
-          </div>
-        </motion.div>
+            <div>
+              <dt className="font-mono text-[10px] uppercase tracking-widest text-ink-faint">
+                Stack
+              </dt>
+              <dd className="mt-1 text-sm">Java · Spring · K8s</dd>
+            </div>
+            <div>
+              <dt className="font-mono text-[10px] uppercase tracking-widest text-ink-faint">
+                Reach
+              </dt>
+              <dd className="mt-1 text-sm">
+                <a href={`mailto:${site.email}`} className="hover:text-accent">
+                  {site.email}
+                </a>
+              </dd>
+            </div>
+          </dl>
+        </div>
 
-        {/* Profile Image/Illustration */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="flex-1 flex justify-center items-center"
-        >
-          <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-blue-500 shadow-xl">
-            <Image 
-              src="/assets/profile/dharmik-profile.jpg" 
-              alt="Dharmik Joshi" 
-              fill 
-              className="object-cover"
-              priority
-              sizes="(max-width: 768px) 256px, 320px"
-              style={{ opacity: 1 }}
-            />
+        <div className="card-border rounded-lg p-1 shadow-[0_20px_60px_-30px_var(--glow)]">
+          <div className="rounded-md bg-[#0d0c0b] px-4 py-3 font-mono text-xs leading-relaxed text-[#c4b8a8] min-h-[220px]">
+            <div className="mb-3 flex gap-1.5">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#5c4a3a]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#7a6348]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#a8845a]" />
+            </div>
+            <p className="whitespace-pre-wrap break-all">
+              {displayed}
+              <span className="terminal-cursor text-accent">▋</span>
+            </p>
           </div>
-        </motion.div>
-      </div>
+          <p className="px-3 py-2 font-mono text-[10px] text-ink-faint">
+            {"// a slice of what I shipped — not a stock illustration"}
+          </p>
+        </div>
+      </motion.div>
     </section>
   );
 }

@@ -1,26 +1,44 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import {
+  Instrument_Serif,
+  JetBrains_Mono,
+  Source_Sans_3,
+} from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/shared/Navbar";
 import Footer from "./components/shared/Footer";
-import ChatAssistant from "./components/chat/ChatAssistant";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const instrumentSerif = Instrument_Serif({
+  weight: "400",
   subsets: ["latin"],
+  variable: "--font-instrument-serif",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const sourceSans = Source_Sans_3({
   subsets: ["latin"],
+  variable: "--font-source-sans",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
 });
 
 export const metadata: Metadata = {
-  title: "Dharmik Joshi - Senior Java Backend Developer",
+  title: "Dharmik Joshi — Senior Backend Engineer",
   description:
-    "Portfolio website showcasing the skills, projects, and experience of Dharmik Joshi, a Senior Java Backend Developer specializing in Spring Boot, Redis, MongoDB, and microservices architecture.",
-  keywords:
-    "Java Developer, Spring Boot, Senior Software Engineer, Backend Developer, Microservices, Redis, MongoDB, AWS",
+    "Senior SDE building Spring Boot microservices, real-time SSE gateways, MCP tooling, and event-driven systems at Newfold Digital and ShopSe.",
+  keywords: [
+    "Java",
+    "Spring Boot",
+    "WebFlux",
+    "Microservices",
+    "Redis",
+    "Kubernetes",
+    "Oracle AQ",
+    "MCP",
+    "Senior Software Engineer",
+  ],
 };
 
 export default function RootLayout({
@@ -29,14 +47,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth dark">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white`}
-      >
+    <html
+      lang="en"
+      className={`${instrumentSerif.variable} ${sourceSans.variable} ${jetbrainsMono.variable} scroll-smooth`}
+    >
+      <body className="antialiased bg-surface text-ink">
         <Navbar />
-        <main className="pt-16">{children}</main>
+        <main className="pt-20">{children}</main>
         <Footer />
-        <ChatAssistant />
       </body>
     </html>
   );
